@@ -17,7 +17,8 @@ class DatabaseService {
 
   Future<List<NoteModel>> getData() async {
     var db = await openDatabase(databaseTableName);
-    return await db.rawQuery('SELECT * FROM Notes') as List<NoteModel>;
+    List<Map<String, Object?>> data = await db.rawQuery('SELECT * FROM Notes');
+    return data.map((e) => NoteModel.fromMap(e)).toList();
   }
 
   Future<void> insertData(

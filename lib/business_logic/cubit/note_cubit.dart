@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:meta/meta.dart';
 import 'package:note_app_v2/data/models/note_model.dart';
 import 'package:note_app_v2/data/repository/note_repo.dart';
 
