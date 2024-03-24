@@ -9,7 +9,7 @@ class CustomTextField extends StatelessWidget {
     required this.textController,
     this.validator,
     this.textInputType,
-    required this.obsecureText,
+    this.obsecureText,
     this.prefixWidget,
     this.suffixIcon,
   });
@@ -19,12 +19,12 @@ class CustomTextField extends StatelessWidget {
   TextInputType? textInputType;
   Widget? prefixWidget;
   Widget? suffixIcon;
-  final bool obsecureText;
+  bool? obsecureText;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      obscureText: obsecureText,
+      obscureText: obsecureText ?? false,
       controller: textController,
       validator: validator,
       keyboardType: textInputType,

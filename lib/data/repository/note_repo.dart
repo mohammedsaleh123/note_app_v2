@@ -1,22 +1,13 @@
 import 'package:note_app_v2/data/cache_services/database_service.dart';
 import 'package:note_app_v2/data/models/note_model.dart';
 
-class NoteRepo {
-  DatabaseService databaseService = DatabaseService();
+DatabaseService databaseService = DatabaseService();
 
-  Future<void> createDataBase() async {
+class Repository {
+  Future<void> createDatabase() async {
     try {
-      await databaseService.createDataBase();
-    } catch (e) {
-      throw Exception(e.toString());
-    }
-  }
-
-  Future<List<NoteModel>> getData(List<NoteModel> noteList) async {
-    try {
-      await databaseService.getData().then((value) => noteList.addAll(value));
-      return noteList;
-    } catch (e) {
+      await databaseService.createDatabase();
+    } on Exception catch (e) {
       throw Exception(e.toString());
     }
   }
@@ -25,22 +16,15 @@ class NoteRepo {
       String title, String content, String dateTime, String noteImage) async {
     try {
       await databaseService.insertData(title, content, dateTime, noteImage);
-    } catch (e) {
+    } on Exception catch (e) {
       throw Exception(e.toString());
     }
   }
 
-  Future<void> updateData(int id, String title, String content, String dateTime,
-      String noteImage) async {
+  Future<void> updateData(int id, Map<String, dynamic> noteData) async {
     try {
-      Map<String, dynamic> noteData = NoteModel(
-              title: title,
-              content: content,
-              dateTime: dateTime,
-              noteImage: noteImage)
-          .toMap();
       await databaseService.updateData(id, noteData);
-    } catch (e) {
+    } on Exception catch (e) {
       throw Exception(e.toString());
     }
   }
@@ -48,7 +32,15 @@ class NoteRepo {
   Future<void> deleteData(int id) async {
     try {
       await databaseService.deleteData(id);
-    } catch (e) {
+    } on Exception catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
+  Future<List<NoteModel>> getData() async {
+    try {
+      return await databaseService.getData();
+    } on Exception catch (e) {
       throw Exception(e.toString());
     }
   }

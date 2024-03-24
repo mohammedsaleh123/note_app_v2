@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:note_app_v2/business_logic/cubit/note_cubit.dart';
 import 'package:note_app_v2/core/app_strings.dart';
+import 'package:note_app_v2/presentation/view/add_note_view.dart';
 import 'package:note_app_v2/presentation/view/note_view.dart';
 
 class AppRoute {
@@ -15,7 +16,9 @@ class AppRoute {
           ),
         );
       default:
-        return MaterialPageRoute(builder: (context) => const NoteView());
+        return MaterialPageRoute(
+            builder: (context) => BlocProvider.value(
+                value: NoteCubit(), child: const AddNoteView()));
     }
   }
 }

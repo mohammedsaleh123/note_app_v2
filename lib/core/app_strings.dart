@@ -1,4 +1,4 @@
-const String databaseTableName = 'Notes.db';
+const String databaseTableName = 'Notes';
 const String noteHomeRoute = '/';
 const String noteDetailsRoute = '/note_details';
 const String noteEditRoute = '/note_edit';

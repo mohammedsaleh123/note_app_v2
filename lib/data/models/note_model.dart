@@ -1,10 +1,12 @@
 class NoteModel {
+  final int id;
   final String title;
   final String content;
   final String dateTime;
   final String noteImage;
 
   NoteModel({
+    required this.id,
     required this.title,
     required this.content,
     required this.dateTime,
@@ -13,6 +15,7 @@ class NoteModel {
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
+      'id': id,
       'title': title,
       'content': content,
       'dateTime': dateTime,
@@ -22,10 +25,11 @@ class NoteModel {
 
   factory NoteModel.fromMap(Map<String, dynamic> map) {
     return NoteModel(
-      title: map['title'] as String,
-      content: map['content'] as String,
-      dateTime: map['dateTime'] as String,
-      noteImage: map['noteImage'] as String,
+      id: map['id'] as int,
+      title: map['title'],
+      content: map['content'],
+      dateTime: map['dateTime'],
+      noteImage: map['noteImage'],
     );
   }
 }

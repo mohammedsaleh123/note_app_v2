@@ -7,6 +7,6 @@ final class NoteInitial extends NoteState {}
 
 final class NoteLoading extends NoteState {}
 
-final class NoteLoaded extends NoteState {}
-
 final class NoteError extends NoteState {}
+
+final class NoteLoaded extends NoteState {}
