@@ -1,3 +1,4 @@
+import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:note_app_v2/business_logic/cubit/note_cubit.dart';
@@ -27,9 +28,7 @@ class _NoteViewState extends State<NoteView> {
         title: CustomText(text: 'Notes'),
       ),
       body: BlocBuilder<NoteCubit, NoteState>(builder: (context, state) {
-        // if (state is NoteInitial) {
-        //   return const Center(child: CircularProgressIndicator());
-        //}
+        final cubit = context.read<NoteCubit>();
         if (state is NoteLoading) {
           return Container();
         } else if (state is NoteError) {
@@ -40,11 +39,22 @@ class _NoteViewState extends State<NoteView> {
               itemBuilder: (context, index) {
                 return InkWell(
                   onTap: () {
-                    context.read<NoteCubit>().deleteData(index + 1);
+                    //context.read<NoteCubit>().deleteData(index + 1);
                   },
                   child: ListTile(
-                    title: CustomText(
-                        text: context.read<NoteCubit>().notes[index].title),
+                    leading: Image.asset(cubit.notes[index].noteImage),
+                    title: ExpandableText(
+                      cubit.notes[index].title,
+                      expandText: '...more',
+                      maxLines: 1,
+                      collapseText: '...less',
+                    ),
+                    subtitle: ExpandableText(
+                      cubit.notes[index].content,
+                      expandText: '...more',
+                      maxLines: 1,
+                      collapseText: '...less',
+                    ),
                   ),
                 );
               });

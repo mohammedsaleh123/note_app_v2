@@ -7,6 +7,8 @@ import 'package:note_app_v2/core/app_strings.dart';
 import 'package:note_app_v2/core/widgets/custom_button.dart';
 import 'package:note_app_v2/core/widgets/custom_text.dart';
 import 'package:note_app_v2/core/widgets/custom_text_field.dart';
+import 'package:note_app_v2/presentation/widgets/display_note_image.dart';
+import 'package:note_app_v2/presentation/widgets/notes_list_images.dart';
 
 class AddNoteView extends StatelessWidget {
   const AddNoteView({super.key});
@@ -19,28 +21,47 @@ class AddNoteView extends StatelessWidget {
       ),
       body: BlocBuilder<NoteCubit, NoteState>(
         builder: (context, state) {
+          final cubit = context.read<NoteCubit>();
           return SingleChildScrollView(
             child: Column(
               children: [
-                CustomTextField(
-                  hintText: 'Title',
-                  textController: context.read<NoteCubit>().titleController,
+                NotesListImages(
+                  cubit: cubit,
                 ),
-                CustomTextField(
-                  hintText: 'Content',
-                  textController: context.read<NoteCubit>().contentController,
+                DisplayNoteImage(
+                  cubit: cubit,
                 ),
-                CustomButton(
-                    onPressed: () {
-                      context.read<NoteCubit>().insertData();
-                      //BlocProvider.of<NoteCubit>(context).getData();
-
-                      Navigator.pushReplacementNamed(context, noteHomeRoute);
-                    },
-                    color: Colors.amber,
-                    radius: 10.sp,
-                    minWidth: Get.width,
-                    child: CustomText(text: 'Save')),
+                Padding(
+                  padding: EdgeInsets.all(8.sp),
+                  child: CustomTextField(
+                    hintText: 'Title',
+                    textController: context.read<NoteCubit>().titleController,
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.all(8.sp),
+                  child: CustomTextField(
+                    hintText: 'Content',
+                    textController: context.read<NoteCubit>().contentController,
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.all(8.sp),
+                  child: CustomButton(
+                      onPressed: () {
+                        context
+                            .read<NoteCubit>()
+                            .insertData(context.read<NoteCubit>().imageChoose);
+                        Navigator.pushReplacementNamed(context, noteHomeRoute);
+                      },
+                      color: Colors.amber,
+                      radius: 10.sp,
+                      minWidth: Get.width,
+                      child: Padding(
+                        padding: EdgeInsets.all(16.sp),
+                        child: CustomText(text: 'Save'),
+                      )),
+                ),
               ],
             ),
           );

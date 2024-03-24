@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:note_app_v2/data/cache_services/database_service.dart';
+import 'package:note_app_v2/core/app_strings.dart';
 import 'package:note_app_v2/data/models/note_model.dart';
 import 'package:note_app_v2/data/repository/note_repo.dart';
 
@@ -8,8 +8,12 @@ part 'note_state.dart';
 
 class NoteCubit extends Cubit<NoteState> {
   NoteCubit() : super(NoteInitial());
+  TextEditingController titleController = TextEditingController();
+  TextEditingController contentController = TextEditingController();
   final Repository repository = Repository();
   List<NoteModel> notes = [];
+  String imageChoose = '';
+  String imageTitle = '';
 
   @override
   void onChange(Change<NoteState> change) {
@@ -25,9 +29,6 @@ class NoteCubit extends Cubit<NoteState> {
   // Future<void> close() {
   //   return super.close();
   // }
-
-  TextEditingController titleController = TextEditingController();
-  TextEditingController contentController = TextEditingController();
 
   void createDatabase() {
     try {
@@ -46,10 +47,10 @@ class NoteCubit extends Cubit<NoteState> {
     }
   }
 
-  void insertData() async {
+  void insertData(String noteImage) async {
     try {
       await repository.insertData(titleController.text, contentController.text,
-          DateTime.now().toString(), '');
+          DateTime.now().toString(), noteImage);
     } on Exception catch (e) {
       throw Exception(e.toString());
     }
@@ -72,5 +73,11 @@ class NoteCubit extends Cubit<NoteState> {
     } on Exception catch (e) {
       throw Exception(e.toString());
     }
+  }
+
+  void chooseImage(int? index) {
+    imageChoose = notesImages[index!];
+    imageTitle = notesTitles[index];
+    emit(NoteLoaded());
   }
 }
