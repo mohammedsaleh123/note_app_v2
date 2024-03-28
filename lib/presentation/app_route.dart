@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:note_app_v2/business_logic/cubit/note_cubit.dart';
 import 'package:note_app_v2/core/app_strings.dart';
+import 'package:note_app_v2/data/models/note_model.dart';
 import 'package:note_app_v2/presentation/view/add_note_view.dart';
+import 'package:note_app_v2/presentation/view/edit_note_view.dart';
 import 'package:note_app_v2/presentation/view/note_view.dart';
 
 class AppRoute {
-  Route generateRoute(RouteSettings settings) {
+  Route? generateRoute(RouteSettings settings) {
     switch (settings.name) {
       case noteHomeRoute:
         return MaterialPageRoute(
@@ -15,10 +17,22 @@ class AppRoute {
             child: const NoteView(),
           ),
         );
-      default:
+      case noteAddRoute:
         return MaterialPageRoute(
-            builder: (context) => BlocProvider.value(
-                value: NoteCubit(), child: const AddNoteView()));
+          builder: (context) => BlocProvider.value(
+            value: NoteCubit(),
+            child: const AddNoteView(),
+          ),
+        );
+      case noteEditRoute:
+        Task task = settings.arguments as Task;
+        return MaterialPageRoute(
+          builder: (context) => BlocProvider(
+            create: (context) => NoteCubit(),
+            child: EditNoteView(task: task),
+          ),
+        );
     }
+    return null;
   }
 }

@@ -8,17 +8,35 @@ import 'package:note_app_v2/core/extension/padding_extension.dart';
 import 'package:note_app_v2/core/widgets/custom_button.dart';
 import 'package:note_app_v2/core/widgets/custom_text.dart';
 import 'package:note_app_v2/core/widgets/custom_text_field.dart';
+import 'package:note_app_v2/data/models/note_model.dart';
 import 'package:note_app_v2/presentation/widgets/display_note_image.dart';
 import 'package:note_app_v2/presentation/widgets/notes_list_images.dart';
 
-class AddNoteView extends StatelessWidget {
-  const AddNoteView({super.key});
+// ignore: must_be_immutable
+class EditNoteView extends StatefulWidget {
+  const EditNoteView({
+    super.key,
+    required this.task,
+  });
+  final Task task;
+
+  @override
+  State<EditNoteView> createState() => _EditNoteViewState();
+}
+
+class _EditNoteViewState extends State<EditNoteView> {
+  @override
+  void initState() {
+    BlocProvider.of<NoteCubit>(context).getOneTask(widget.task.id!);
+    BlocProvider.of<NoteCubit>(context).taskToEdit(widget.task);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: CustomText(text: 'Add Note'),
+        title: CustomText(text: 'Edit Note'),
       ),
       body: BlocBuilder<NoteCubit, NoteState>(
         builder: (context, state) {
@@ -34,25 +52,31 @@ class AddNoteView extends StatelessWidget {
                 ),
                 CustomTextField(
                   hintText: 'Title',
-                  textController: context.read<NoteCubit>().titleController,
+                  textController: cubit.editTitleController,
                 ).padding(8.w, 8.h),
                 CustomTextField(
                   hintText: 'Content',
-                  textController: context.read<NoteCubit>().contentController,
+                  textController: cubit.editContentController,
                 ).padding(8.w, 8.h),
                 CustomButton(
                   onPressed: () {
-                    context
-                        .read<NoteCubit>()
-                        .insertData(context.read<NoteCubit>().imageChoose);
-                    Navigator.pop(context, noteHomeRoute);
-                    context.read<NoteCubit>().clearText();
+                    cubit.updateData(
+                      widget.task.id!,
+                    );
+                    //cubit.getData();
+                    Navigator.pop(
+                      context,
+                      noteHomeRoute,
+                    );
+                    cubit.clearText();
                   },
                   color: Colors.amber,
                   radius: 10.sp,
                   minWidth: Get.width,
-                  child: CustomText(text: context.read<NoteCubit>().buttonTitle)
-                      .padding(16.w, 16.h),
+                  child: Padding(
+                    padding: EdgeInsets.all(16.sp),
+                    child: CustomText(text: cubit.buttonTitle),
+                  ),
                 ).padding(8.w, 8.h),
               ],
             ),

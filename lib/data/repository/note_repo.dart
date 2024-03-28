@@ -1,29 +1,22 @@
 import 'package:note_app_v2/data/cache_services/database_service.dart';
 import 'package:note_app_v2/data/models/note_model.dart';
 
-DatabaseService databaseService = DatabaseService();
-
 class Repository {
   Future<void> createDatabase() async {
+    await TasksDatabase.instance.database;
+  }
+
+  Future<void> insertData(Task task) async {
     try {
-      await databaseService.createDatabase();
+      await TasksDatabase.instance.createTask(task);
     } on Exception catch (e) {
       throw Exception(e.toString());
     }
   }
 
-  Future<void> insertData(
-      String title, String content, String dateTime, String noteImage) async {
+  Future<void> updateData(int id, Task task) async {
     try {
-      await databaseService.insertData(title, content, dateTime, noteImage);
-    } on Exception catch (e) {
-      throw Exception(e.toString());
-    }
-  }
-
-  Future<void> updateData(int id, Map<String, dynamic> noteData) async {
-    try {
-      await databaseService.updateData(id, noteData);
+      await TasksDatabase.instance.updateTask(task);
     } on Exception catch (e) {
       throw Exception(e.toString());
     }
@@ -31,15 +24,23 @@ class Repository {
 
   Future<void> deleteData(int id) async {
     try {
-      await databaseService.deleteData(id);
+      await TasksDatabase.instance.deleteTask(id);
     } on Exception catch (e) {
       throw Exception(e.toString());
     }
   }
 
-  Future<List<NoteModel>> getData() async {
+  Future<Task> getOneTask(int id) async {
     try {
-      return await databaseService.getData();
+      return await TasksDatabase.instance.readTask(id);
+    } on Exception catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
+  Future<List<Task>> getData() async {
+    try {
+      return await TasksDatabase.instance.readAllTasks();
     } on Exception catch (e) {
       throw Exception(e.toString());
     }

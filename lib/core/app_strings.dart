@@ -1,6 +1,5 @@
 import 'package:note_app_v2/core/images_assets.dart';
 
-const String databaseTableName = 'Notes';
 const String noteHomeRoute = '/';
 const String noteDetailsRoute = '/note_details';
 const String noteEditRoute = '/note_edit';
